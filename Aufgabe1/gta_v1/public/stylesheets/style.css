@@ -35,8 +35,8 @@ html {
 
 body {
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	/* display: flex;
-  flex-direction: column; */
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
 }
 
@@ -93,15 +93,18 @@ a {
 /* ### TODO ### Styles for other HTML elements */
 .content-width {
 	max-width: 1500px;
-	padding: 15px;
+	padding: 0 15px;
 	margin: 0 auto;
+}
+img {
+	max-width: 100%;
 }
 
 
 /* ### TODO ### Styles for Header Component */
 header {
 	background: var(--background-color);
-	border: 2px solid var(--background-color);
+	border-bottom: 1px solid var(--border-color);
 	padding: 20px 0;
 }
 header > .content-width {
@@ -112,26 +115,50 @@ header > .content-width {
 .header__image {
 	max-height: 50px;
 }
+/* ### TODO ### Styles for Footer Component */
+footer {
+	background: var(--background-color);
+	border-top: 1px solid var(--border-color);
+	margin-top: auto;
+	padding: 20px 0;
+}
 
 
 /* ### TODO ### Styles for Main Component */
-
-/* ... your code here ... */
+.main-grid {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	grid-template-areas: "side main";
+	gap: 30px;
+}
 
 
 /* ### TODO ### Styles for Tagging component */
-
-/* ... your code here ... */
+.main__tagging {
+	grid-area: side;
+}
 
 
 /* ### TODO ### Styles for Discovery component */
-
-/* ... your code here ... */
-
-
-/* ### TODO ### Styles for Footer Component */
-
-/* ... your code here ... */
+.main__discovery {
+	grid-area: main;
+}
+.discovery__wrapper {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	gap: 30px;
+}
+.discovery__taglist ul {
+	list-style: none;
+}
+.discovery__taglist li {
+	background: var(--background-color);
+	border: 1px solid var(--border-color);
+	padding: 10px;
+}
+.discovery__taglist li:not(:last-of-type) {
+	margin-bottom: 15px;
+}
 
 
 /* ### TODO ### Media Queries */
