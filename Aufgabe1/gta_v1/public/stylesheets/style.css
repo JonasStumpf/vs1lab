@@ -99,6 +99,9 @@ a {
 img {
 	max-width: 100%;
 }
+input {
+	display: block;
+}
 
 
 /* ### TODO ### Styles for Header Component */
@@ -125,6 +128,9 @@ footer {
 
 
 /* ### TODO ### Styles for Main Component */
+main {
+	padding: 50px 0;
+}
 .main-grid {
 	display: grid;
 	grid-template-columns: 1fr 3fr;
@@ -158,6 +164,9 @@ footer {
 }
 .discovery__taglist li:not(:last-of-type) {
 	margin-bottom: 15px;
+}
+.discovery__map img {
+	display: block;
 }
 
 
