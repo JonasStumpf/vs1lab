@@ -45,7 +45,15 @@ a {
 }
 
 /* Grid styles (no changes required) */
-/* ja aber nein ... für grids gibts display: grid; ... */
+
+/*
+flex = flexibel, für (Layout-)Raster wie hier gewollt ist grid vorzuziehen:
+Ich habe GridCore (von mir erstellte CSS für schnelle & komplexe Layouts, in der grid-core.min.css ist der GitHub-Link) verwendet,
+da dass nicht ganz im Sinne der Aufgabe ist, habe ich die Variante mit flexbox und auch eine mit grid ohne GridCore eingerichtet,
+dazu die in HTML verlinkte GridCore-CSS auskommentieren und die entsprechende Variante einkommentieren und die anderen auskommentieren
+*/
+
+/* Variante 1: flexbox */
 /* .row {
   width: 100%;
   display: flex;
@@ -87,10 +95,68 @@ a {
 }
 .col-12 {
   width: calc(100% - 1rem);
+}
+@media (max-width: 600px) {
+	.row {
+		display: block;
+	}
+	[class*="col-"] {
+		width: 100%;
+	}
+	.discovery__taglist, .main__tagging {
+		margin-bottom: 30px;
+	}
+} */
+
+
+/* Variante 2: ohne GridCore */
+/* .main__discovery {
+	grid-area: main;
+}
+.main__tagging {
+	grid-area: side;
+	margin-bottom: 30px;
+}
+.discovery__wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+.discovery__taglist {
+	order: 2;
+}
+@media (min-width: 400px) {
+	.main-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas: "side main";
+		gap: 30px;
+	}
+}
+@media (min-width: 500px) {
+	.main-grid {
+		grid-template-columns: 1fr 2fr;
+	}
+}
+@media (min-width: 600px) {
+	.main-grid {
+		grid-template-columns: 1fr 3fr;
+	}
+	.discovery__wrapper {
+		display: grid;
+		grid-template-columns: 3fr 5fr;
+		gap: 30px;
+	}
+	.discovery__taglist {
+		order: unset;
+	}
 } */
 
 
 /* ### TODO ### Styles for other HTML elements */
+h2 {
+	margin-bottom: 0.5em;
+}
 .content-width {
 	max-width: 1500px;
 	padding: 0 15px;
@@ -99,9 +165,37 @@ a {
 img {
 	max-width: 100%;
 }
-input {
+button {
+	background: var(--background-color);
+	border: 1px solid var(--border-color);
+	cursor: pointer;
+	transition: filter 0.25s ease;
+}
+button:hover, button:focus-visible {
+	filter: brightness(0.75);
+}
+fieldset {
+	padding: 10px;
+}
+label, input {
 	display: block;
 }
+form input, form button {
+	width: min(100%, 200px);
+	padding: 5px 10px;
+	border: 1px solid var(--border-color);
+}
+input[readonly], button[type="submit"] {
+	background: var(--background-color);
+}
+label input {
+	margin-top: 0.25em;
+}
+label {
+	margin-bottom: 1em;
+	color: var(--gray-color);
+}
+
 
 
 /* ### TODO ### Styles for Header Component */
@@ -114,6 +208,8 @@ header > .content-width {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: wrap;
+	gap: 30px;
 }
 .header__image {
 	max-height: 50px;
@@ -131,45 +227,61 @@ footer {
 main {
 	padding: 50px 0;
 }
-.main-grid {
-	display: grid;
-	grid-template-columns: 1fr 3fr;
-	grid-template-areas: "side main";
-	gap: 30px;
+main > .grid-default { /* mit GridCore */
+	--gap-x: 15px;
+	--gap-x-sm: 30px;
+	--gap-y: 30px;
 }
 
 
 /* ### TODO ### Styles for Tagging component */
-.main__tagging {
-	grid-area: side;
+.main__tagging { /* mit GridCore */
+	--col-span: 12;
+	--col-span-sm: 5;
+	--col-span-md: 4;
 }
 
 
 /* ### TODO ### Styles for Discovery component */
-.main__discovery {
-	grid-area: main;
+.main__discovery  { /* mit GridCore */
+	--col-span: 12;
+	--col-span-sm: 7;
+	--col-span-md: 8;
 }
-.discovery__wrapper {
-	display: grid;
-	grid-template-columns: 1fr 3fr;
-	gap: 30px;
+.discovery__wrapper { /* mit GridCore */
+	--gap-y: 30px;
+	--gap-x-md: 30px;
+	margin-top: 30px;
+}
+.discovery__taglist { /* mit GridCore */
+	--row-start: 2;
+	--row-start-md: 1;
+	--col-span: 12;
+	--col-span-md: 6;
+	--col-span-lg: 4;
+}
+.discovery__map { /* mit GridCore */
+	--col-span: 12;
+	--col-span-md: 6;
+	--col-span-lg: 8;
 }
 .discovery__taglist ul {
 	list-style: none;
 }
-.discovery__taglist li {
-	background: var(--background-color);
-	border: 1px solid var(--border-color);
+.discovery__taglist li button {
 	padding: 10px;
+	text-align: left;
+	color: var(--link-color);
+	width: 100%;
+}
+.discovery__taglist li button span {
+	display: block;
 }
 .discovery__taglist li:not(:last-of-type) {
 	margin-bottom: 15px;
 }
 .discovery__map img {
 	display: block;
+	width: 100%;
 }
 
-
-/* ### TODO ### Media Queries */
-
-/* ... your code here ... */
