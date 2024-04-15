@@ -47,7 +47,6 @@ a {
 /* Grid styles (no changes required) */
 
 /*!
-flex = flexibel, für (Layout-)Raster wie hier gewollt ist grid vorzuziehen:
 Ich habe GridCore (von mir erstellte CSS für schnelle & komplexe Layouts, in der grid-core.min.css ist der GitHub-Link) verwendet,
 da dass nicht ganz im Sinne der Aufgabe ist, habe ich die Variante mit flexbox und auch eine mit grid ohne GridCore eingerichtet,
 dazu die in HTML verlinkte GridCore-CSS auskommentieren und die entsprechende Variante einkommentieren und die anderen auskommentieren
