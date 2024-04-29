@@ -7,7 +7,7 @@
 // "console.log" writes to the browser's console. 
 // The console window must be opened explicitly in the browser.
 // Try to find this output in the browser...
-console.log("The geoTagging script is going to start...");
+//console.log("The geoTagging script is going to start...");
 
 /**
   * A class to help using the HTML5 Geolocation API.
@@ -120,5 +120,21 @@ class MapManager {
 
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
-    alert("Please change the script 'geotagging.js'");
+    //alert("Please change the script 'geotagging.js'");
+    updateLocation();
 });
+
+function updateLocation() {
+    const mapManager = new MapManager();
+    LocationHelper.findLocation((locationHelper)=>{
+        for (const latInput of document.querySelectorAll('input[name="lat"]')) {
+            latInput.value = locationHelper.latitude;
+        }
+        for (const longInput of document.querySelectorAll('input[name="long"]')) {
+            longInput.value = locationHelper.longitude;
+        }
+        document.querySelector(".discovery__map").innerHTML = '<div id="map"></div>';
+        mapManager.initMap(locationHelper.latitude, locationHelper.longitude);
+        mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude);
+    });
+}
