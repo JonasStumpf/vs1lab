@@ -124,13 +124,32 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
 });
 
+async function updateLocation() {
+    const mapManager = new MapManager();
+    const locationHelper = await new Promise((resolve) => {
+        LocationHelper.findLocation((helper)=>{
+            resolve(helper);
+        });
+    })
+
+    for (const latInput of document.querySelectorAll('input.js-lat')) {
+        latInput.value = locationHelper.latitude;
+    }
+    for (const longInput of document.querySelectorAll('input.js-long')) {
+        longInput.value = locationHelper.longitude;
+    }
+    document.querySelector(".discovery__map").innerHTML = '<div id="map"></div>';
+    mapManager.initMap(locationHelper.latitude, locationHelper.longitude);
+    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude);
+}
+/*
 function updateLocation() {
     const mapManager = new MapManager();
     LocationHelper.findLocation((locationHelper)=>{
-        for (const latInput of document.querySelectorAll('input[name="lat"]')) {
+        for (const latInput of document.querySelectorAll('input.js-lat')) {
             latInput.value = locationHelper.latitude;
         }
-        for (const longInput of document.querySelectorAll('input[name="long"]')) {
+        for (const longInput of document.querySelectorAll('input.js-long')) {
             longInput.value = locationHelper.longitude;
         }
         document.querySelector(".discovery__map").innerHTML = '<div id="map"></div>';
@@ -138,3 +157,4 @@ function updateLocation() {
         mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude);
     });
 }
+*/

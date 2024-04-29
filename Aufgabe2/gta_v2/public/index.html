@@ -32,8 +32,8 @@
                 <!-- ############### VS1Lab 1a Form 1 Start -->
                 <form id="tag-form" action="/tagging" method="post">
                     <fieldset><legend>Add a new GeoTag</legend>
-                        <label>Latitude:<input value="49.01379" type="text" name="lat" id="tag_lat" readonly></label>
-                        <label>Longitude:<input value="8.390071" type="text" name="long" id="tag_long" readonly></label>
+                        <label>Latitude:<input class="js-lat" value="49.01379" type="text" name="lat" id="tag_lat" readonly></label>
+                        <label>Longitude:<input class="js-long" value="8.390071" type="text" name="long" id="tag_long" readonly></label>
                         <label>Name:<input maxlength="10" placeholder="e.g. Central Berlin" type="text" name="name" id="tag_name" required></label>
                         <label>Hashtag:<input pattern="^#[a-zA-Z]{1,10}$" title="Begin with # followed by letters." maxlength="11" placeholder="e.g. #ber" type="text" name="tag" id="tag_tag"></label>
                         <button type="submit" name="submit" id="tag_submit" value="1">Add Tag</button>
@@ -49,8 +49,8 @@
                 <!-- ############### VS1Lab 1a Form 2 Start -->
                 <form class="discovery__search" id="discoveryFilterForm" action="/discovery" method="post">
                     <fieldset><legend>Search</legend>
-                        <input value="49.01379" type="hidden" name="lat" id="disc_lat">
-                        <input value="8.390071" type="hidden" name="long" id="disc_long">
+                        <input class="js-lat" value="49.01379" type="hidden" name="lat" id="disc_lat">
+                        <input class="js-long" value="8.390071" type="hidden" name="long" id="disc_long">
                         <label>Search term or keywords:<input placeholder="e.g. Berlin" type="text" name="search" id="disc_search"></label>
                         <button type="submit" name="submit" id="disc_submit" value="1">Search</button>
                     </fieldset>
