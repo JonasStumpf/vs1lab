@@ -130,7 +130,7 @@ async function updateLocation() {
         LocationHelper.findLocation((helper)=>{
             resolve(helper);
         });
-    })
+    });
 
     for (const latInput of document.querySelectorAll('input.js-lat')) {
         latInput.value = locationHelper.latitude;
