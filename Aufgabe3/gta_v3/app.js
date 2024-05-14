@@ -24,10 +24,11 @@ const indexRouter = require('./routes/index');
 const app = express();
 
 // Set ejs as the view engine.
-app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 // Set ejs template folder.
-app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 
 // Set logger
 app.use(logger('dev'));
@@ -41,8 +42,7 @@ app.use(express.urlencoded({ extended: false }));
  * Configure path for static content.
  * Test the result in a browser here: 'http://localhost:3000/'.
  */
-
-// TODO: ... your code here ...
+app.use(express.static(__dirname+"/public/", {index: false}));
 
 // Set dedicated script for routing
 app.use('/', indexRouter);
