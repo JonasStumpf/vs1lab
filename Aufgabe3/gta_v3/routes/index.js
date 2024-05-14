@@ -32,6 +32,23 @@ const GeoTag = require('../models/geotag');
 const GeoTagStore = require('../models/geotag-store');
 const GeoTagList = new GeoTagStore();
 
+//default start page
+const defaultRender = (req, res)=>{
+  res.render('index', { 
+    taglist: GeoTagList.getAllGeoTags(15),
+    location: {}
+  });
+}
+//check if cords are set for POST requests
+const checkLocation = (req, res, next)=>{
+  const data = req.body;
+  if (!data.lat || !data.long) {
+    defaultRender(req, res);
+    return;
+  }
+  next();
+}
+
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -42,17 +59,7 @@ const GeoTagList = new GeoTagStore();
  */
 
 // TODO: extend the following route example if necessary
-router.get('/', (req, res) => {
-  //res.render('index', { taglist: [] });
-  res.render('index', { 
-    taglist: GeoTagList.getAllGeoTags(15),
-    location: {
-      lat: 49.01379,
-      lon: 8.390071
-    }
-  });
-});
-
+router.get('/', defaultRender);
 
 /**
  * Route '/tagging' for HTTP 'POST' requests.
@@ -69,8 +76,8 @@ router.get('/', (req, res) => {
  * by radius around a given location.
  */
 // TODO: ... your code here ...
-router.post("/tagging", (req, res)=>{
-  const  data = req.body;
+router.post("/tagging", checkLocation, (req, res)=>{
+  const data = req.body;
   GeoTagList.addGeoTag([data.name, data.lat, data.long, data.tag]);
   const location = {lat: data.lat, lon: data.long};
   res.render('index', { 
@@ -97,7 +104,7 @@ router.post("/tagging", (req, res)=>{
  */
 
 // TODO: ... your code here ...
-router.post("/discovery", (req, res)=>{
+router.post("/discovery", checkLocation, (req, res)=>{
   const  data = req.body;
   const location = {lat: data.lat, lon: data.long};
   res.render('index', { 
