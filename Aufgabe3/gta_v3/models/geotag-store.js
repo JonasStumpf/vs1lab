@@ -1,5 +1,7 @@
 // File origin: VS1LAB A3
 
+const GeoTag = require('./geotag');
+
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -24,9 +26,18 @@
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
+    #list = [];
 
-    // TODO: ... your code here ...
-
+    constructor() {
+        const GeoTagExamples = require('../models/geotag-examples');
+        for (const example of GeoTagExamples.tagList) {
+            this.#list.push(new GeoTag(...example));
+        }
+    }
+    
+    getAllGeoTags() {
+        return this.#list;
+    }
 }
 
 module.exports = InMemoryGeoTagStore
