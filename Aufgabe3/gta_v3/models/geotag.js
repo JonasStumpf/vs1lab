@@ -34,7 +34,7 @@ class GeoTag {
      * @returns 
      */
     getDistance(cord) { //return distance this and a given cord -> http://www.movable-type.co.uk/scripts/latlong.html
-        const radLat1 = this.latitude * Math.PI/180, radLat2 = cord.lat * Math.PI/180, radLonDiff = (cord.lon - this.longitude) * Math.PI/180, R = 6371e3;
+        const radLat1 = this.latitude * Math.PI/180, radLat2 = cord.lat * Math.PI/180, radLonDiff = (cord.long - this.longitude) * Math.PI/180, R = 6371e3;
         const d = Math.acos( Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1)*Math.cos(radLat2) * Math.cos(radLonDiff) ) * R;
         return d;
     }

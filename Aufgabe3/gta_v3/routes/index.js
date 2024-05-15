@@ -35,8 +35,8 @@ const GeoTagList = new GeoTagStore();
 //default start page
 const defaultRender = (req, res)=>{
   res.render('index', { 
-    taglist: GeoTagList.getAllGeoTags(15),
-    location: {}
+    taglist: res._taglist || GeoTagList.getAllGeoTags(15),
+    location: {lat, long} = req.body
   });
 }
 //check if cords are set for POST requests
@@ -57,7 +57,6 @@ const checkLocation = (req, res, next)=>{
  *
  * As response, the ejs-template is rendered without geotag objects.
  */
-
 // TODO: extend the following route example if necessary
 router.get('/', defaultRender);
 
@@ -79,11 +78,8 @@ router.get('/', defaultRender);
 router.post("/tagging", checkLocation, (req, res)=>{
   const data = req.body;
   GeoTagList.addGeoTag([data.name, data.lat, data.long, data.tag]);
-  const location = {lat: data.lat, lon: data.long};
-  res.render('index', { 
-    taglist: GeoTagList.getNearbyGeoTags(location),
-    location: location
-  });
+  res._taglist = GeoTagList.getNearbyGeoTags(data);
+  defaultRender(req, res);
 });
 
 
@@ -106,11 +102,8 @@ router.post("/tagging", checkLocation, (req, res)=>{
 // TODO: ... your code here ...
 router.post("/discovery", checkLocation, (req, res)=>{
   const  data = req.body;
-  const location = {lat: data.lat, lon: data.long};
-  res.render('index', { 
-    taglist: GeoTagList.searchNearbyGeoTags(data.search, location),
-    location: location
-  });
+  res._taglist = GeoTagList.searchNearbyGeoTags(data.search, data);
+  defaultRender(req, res);
 });
 
 
