@@ -40,9 +40,12 @@ async function updateLocation() {
     for (const longInput of document.querySelectorAll("input.js-long")) {
         longInput.value = locationHelper.longitude;
     }
-    document.querySelector(".discovery__map").innerHTML = '<div id="map"></div>';
+    
+    const mapContainer = document.querySelector(".discovery__map");
+    mapContainer.innerHTML = '<div id="map"></div>';
+    const tagList = JSON.parse(mapContainer.dataset.tags);
     mapManager.initMap(locationHelper.latitude, locationHelper.longitude);
-    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude);
+    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tagList);
 }
 
 function getCords() {
