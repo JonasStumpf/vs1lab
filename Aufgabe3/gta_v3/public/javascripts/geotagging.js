@@ -43,9 +43,19 @@ async function updateLocation() {
     
     const mapContainer = document.querySelector(".discovery__map");
     mapContainer.innerHTML = '<div id="map"></div>';
+
     const tagList = JSON.parse(mapContainer.dataset.tags);
     mapManager.initMap(locationHelper.latitude, locationHelper.longitude);
     mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tagList);
+
+    document.querySelector("#discoveryResults").addEventListener("click", ()=>{
+        let target = event.target;
+        while (target && target != event.currentTarget && !target.dataset.id) {
+            target = target.parentElement;
+        }
+        if (!target.dataset.id) return;
+        mapManager.goToMarker(...target.dataset.id.split(";"));
+    });
 }
 
 function getCords() {

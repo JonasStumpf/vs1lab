@@ -56,5 +56,15 @@
                 .bindPopup(tag.name)
                 .addTo(this.#markers);  
         }
+
+    }
+
+    goToMarker(name, lat, long) {
+        for (const marker of this.#markers.getLayers()) {
+            const cord = marker.getLatLng();
+            if (cord.lat != lat || cord.lng != long || marker.getPopup().getContent() != name) continue;
+            marker.openPopup();
+            this.#map.flyTo(cord);
+        }
     }
 }
