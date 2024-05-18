@@ -52,19 +52,19 @@
             .bindPopup("Your Location")
             .addTo(this.#markers);
         for (const tag of tags) {
-            L.marker([tag.latitude,tag.longitude], { icon: this.#defaultIcon })
+            const marker = L.marker([tag.latitude,tag.longitude], { icon: this.#defaultIcon })
                 .bindPopup(tag.name)
-                .addTo(this.#markers);  
+                .addTo(this.#markers);
+            marker.id = tag.id;
         }
 
     }
 
-    goToMarker(name, lat, long) {
+    goToMarker(id) {
         for (const marker of this.#markers.getLayers()) {
-            const cord = marker.getLatLng();
-            if (cord.lat != lat || cord.lng != long || marker.getPopup().getContent() != name) continue;
+            if (marker.id != id) continue;
             marker.openPopup();
-            this.#map.flyTo(cord);
+            this.#map.flyTo(marker.getLatLng());
         }
     }
 }

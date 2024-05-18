@@ -54,7 +54,7 @@ async function updateLocation() {
             target = target.parentElement;
         }
         if (!target.dataset.id) return;
-        mapManager.goToMarker(...target.dataset.id.split(";"));
+        mapManager.goToMarker(target.dataset.id);
     });
 }
 

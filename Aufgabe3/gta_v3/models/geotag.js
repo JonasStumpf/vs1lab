@@ -10,6 +10,16 @@
  * GeoTag objects should contain at least all fields of the tagging form.
  */
 class GeoTag {
+    static id = 0;
+    
+    #id; //prevent changing id
+   get id() {return this.#id;}
+    toJSON() { //private variables are ignored in JSON.stringify, so override it
+        return {
+            ...this,
+            id: this.#id
+        }
+    }
 
     /**
      * 
@@ -20,6 +30,10 @@ class GeoTag {
      */
     constructor(name, lat, long,  hastag) {
         if (!name || !lat || !long) throw new Error("GeoTag information missing.");
+
+        this.#id = GeoTag.id;
+        GeoTag.id += 1;
+        
         this.name = name;
         this.latitude = lat;
         this.longitude = long;
