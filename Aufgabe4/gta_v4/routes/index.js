@@ -28,7 +28,24 @@ const GeoTag = require('../models/geotag');
 const GeoTagStore = require('../models/geotag-store');
 
 // App routes (A3)
+const GeoTagList = new GeoTagStore();
 
+//default start page
+const defaultRender = (req, res)=>{
+  res.render('index', { 
+    taglist: res._taglist || GeoTagList.getAllGeoTags(15),
+    location: {lat, long} = req.body
+  });
+}
+//check if cords are set for POST requests
+const checkLocation = (req, res, next)=>{
+  const data = req.body;
+  if (!data.lat || !data.long) {
+    defaultRender(req, res);
+    return;
+  }
+  next();
+}
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -37,9 +54,19 @@ const GeoTagStore = require('../models/geotag-store');
  *
  * As response, the ejs-template is rendered without geotag objects.
  */
+router.get('/', defaultRender);
 
-router.get('/', (req, res) => {
-  res.render('index', { taglist: [] })
+router.post("/tagging", checkLocation, (req, res)=>{
+  const data = req.body;
+  GeoTagList.addGeoTag([data.name, data.lat, data.long, data.tag]);
+  res._taglist = GeoTagList.getNearbyGeoTags(data);
+  defaultRender(req, res);
+});
+
+router.post("/discovery", checkLocation, (req, res)=>{
+  const  data = req.body;
+  res._taglist = GeoTagList.searchNearbyGeoTags(data.search, data);
+  defaultRender(req, res);
 });
 
 // API routes (A4)
