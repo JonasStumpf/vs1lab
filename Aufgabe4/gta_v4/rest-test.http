@@ -1,0 +1,21 @@
+
+### basic call
+GET http://localhost:3000/ HTTP/1.1
+
+
+--- GeoTag Search ---
+
+### geotag search: all params
+GET http://localhost:3000/api/geotags?search=Castle&lat=49.01379&long=8.404435 HTTP/1.1
+
+
+### geotag search: no params
+GET http://localhost:3000/api/geotags HTTP/1.1
+
+
+### geotag search: searchtearm
+GET http://localhost:3000/api/geotags?search=Castle HTTP/1.1
+
+
+### geotag search: lat & long
+GET http://localhost:3000/api/geotags?lat=49.01379&long=8.404435 HTTP/1.1

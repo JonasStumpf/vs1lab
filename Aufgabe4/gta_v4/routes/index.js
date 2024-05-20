@@ -26,10 +26,9 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
-
-// App routes (A3)
 const GeoTagList = new GeoTagStore();
 
+// App routes (A3)
 //default start page
 const defaultRender = (req, res)=>{
   res.render('index', { 
@@ -82,8 +81,11 @@ router.post("/discovery", checkLocation, (req, res)=>{
  * If 'searchterm' is present, it will be filtered by search term.
  * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
  */
-
 // TODO: ... your code here ...
+router.get('/api/geotags', (req, res, next)=>{
+  const data = req.query;
+  res.json( GeoTagList.searchNearbyGeoTags(data.search, data) );
+});
 
 
 /**

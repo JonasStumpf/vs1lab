@@ -39,12 +39,12 @@ class InMemoryGeoTagStore{
      * get GeoTags that are within a radius of a location
      * @param {Object} location location to search around
      * @param {Number} location.lat latitude of location
-     * @param {Number} location.lon longitude of location
+     * @param {Number} location.long longitude of location
      * @param {Number} [radius=5] radius to search in km
      * @returns list with GeoTags that are within the radius
      */
     getNearbyGeoTags(location, radius = 5) {
-        return this.#list.filter((item)=>item.getDistance(location) < radius*1000);
+        return (location.lat && location.long) ? this.#list.filter((item)=>item.getDistance(location) < radius*1000) : this.getAllGeoTags();
     }
 
     /**
@@ -58,7 +58,7 @@ class InMemoryGeoTagStore{
      */
     searchNearbyGeoTags(keyword, location, radius) {
         const tags = this.getNearbyGeoTags(location, radius);
-        return tags.filter((item)=>item.matchesKeyword(keyword));
+        return keyword ? tags.filter((item)=>item.matchesKeyword(keyword)) : tags;
     }
 
     addGeoTag(tagInfo) {
