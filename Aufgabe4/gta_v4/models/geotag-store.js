@@ -62,12 +62,35 @@ class InMemoryGeoTagStore{
     }
 
     addGeoTag(tagInfo) {
-        this.#list.push(new GeoTag(...tagInfo));
+        const tag = new GeoTag(...tagInfo);
+        this.#list.push(tag);
+        return tag;
     }
     removeGeoTag(name) {
         this.#list = this.#list.filter((item)=>item.name != name);
     }
-
+    deleteGeoTag(id) {
+        for (let i = 0; i < this.#list.length; i++) {
+            const tag = this.#list[i];
+            if (tag.id != id) continue;
+            this.#list.splice(i, 1);
+            return tag;
+        }
+        return false;
+    }
+    updateGeoTag(id, data = {}) {
+        const tag = this.getGeoTag(id);
+        if (!tag) return false;
+        console.log(data);
+        tag.update(data.name, data.lat, data.long, data.hashtag);
+        return tag;
+    }
+    getGeoTag(id) {
+        for (const tag of this.#list) {
+            if (tag.id == id) return tag;
+        }
+        return false;
+    }
     getAllGeoTags(limiter = 0) {
         return limiter ? this.#list.slice(0, limiter) : this.#list;
     }

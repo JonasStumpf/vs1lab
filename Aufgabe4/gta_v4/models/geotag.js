@@ -26,9 +26,9 @@ class GeoTag {
      * @param {String} name 
      * @param {Number} lat 
      * @param {Number} long 
-     * @param {String} hastag 
+     * @param {String} hashtag 
      */
-    constructor(name, lat, long,  hastag) {
+    constructor(name, lat, long,  hashtag) {
         if (!name || !lat || !long) throw new Error("GeoTag information missing.");
 
         this.#id = GeoTag.id;
@@ -37,7 +37,14 @@ class GeoTag {
         this.name = name;
         this.latitude = lat;
         this.longitude = long;
-        this.hashtag = hastag;
+        this.hashtag = hashtag;
+    }
+
+    update(name, lat, long, hashtag) {
+        if (name) this.name = name;
+        if (lat) this.latitude = lat;
+        if (long) this.longitude = long;
+        if (hashtag) this.hashtag = hashtag;
     }
     
     /**

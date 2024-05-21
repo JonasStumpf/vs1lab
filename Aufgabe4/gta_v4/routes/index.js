@@ -87,7 +87,6 @@ router.get('/api/geotags', (req, res, next)=>{
   res.json( GeoTagList.searchNearbyGeoTags(data.search, data) );
 });
 
-
 /**
  * Route '/api/geotags' for HTTP 'POST' requests.
  * (http://expressjs.com/de/4x/api.html#app.post.method)
@@ -98,9 +97,20 @@ router.get('/api/geotags', (req, res, next)=>{
  * The URL of the new resource is returned in the header as a response.
  * The new resource is rendered as JSON in the response.
  */
-
 // TODO: ... your code here ...
-
+router.post('/api/geotags', (req, res, next)=>{
+  const data = req.body;
+  let tag;
+  try {
+    tag = GeoTagList.addGeoTag([data.name, data.lat, data.long, data.tag]);
+  } catch (error) {
+    res.status(400).send({error: 'GeoTag data missing.'});
+    return;
+  }
+  res.location(`/api/geotags/${tag.id}`);
+  res.status(201);
+  res.json( tag );
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'GET' requests.
@@ -111,9 +121,15 @@ router.get('/api/geotags', (req, res, next)=>{
  *
  * The requested tag is rendered as JSON in the response.
  */
-
 // TODO: ... your code here ...
-
+router.get('/api/geotags/:id', (req, res, next)=>{
+  const tag = GeoTagList.getGeoTag(req.params.id);
+  if (!tag) {
+    res.sendStatus(404);
+    return;
+  }
+  res.json( tag );
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'PUT' requests.
@@ -128,9 +144,15 @@ router.get('/api/geotags', (req, res, next)=>{
  * Changes the tag with the corresponding ID to the sent value.
  * The updated resource is rendered as JSON in the response. 
  */
-
 // TODO: ... your code here ...
-
+router.put('/api/geotags/:id', (req, res, next)=>{
+  const tag = GeoTagList.updateGeoTag(req.params.id, req.body);
+  if (!tag) {
+    res.sendStatus(404);
+    return;
+  }
+  res.json( tag );
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'DELETE' requests.
@@ -142,7 +164,16 @@ router.get('/api/geotags', (req, res, next)=>{
  * Deletes the tag with the corresponding ID.
  * The deleted resource is rendered as JSON in the response.
  */
-
 // TODO: ... your code here ...
+router.delete('/api/geotags/:id', (req, res, next)=>{
+  const tag = GeoTagList.deleteGeoTag(req.params.id);
+  if (!tag) {
+    res.sendStatus(404);
+    return;
+  }
+  res.json( tag );
+});
+
+
 
 module.exports = router;

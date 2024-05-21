@@ -8,14 +8,80 @@ GET http://localhost:3000/ HTTP/1.1
 ### geotag search: all params
 GET http://localhost:3000/api/geotags?search=Castle&lat=49.01379&long=8.404435 HTTP/1.1
 
-
 ### geotag search: no params
 GET http://localhost:3000/api/geotags HTTP/1.1
-
 
 ### geotag search: searchtearm
 GET http://localhost:3000/api/geotags?search=Castle HTTP/1.1
 
-
 ### geotag search: lat & long
 GET http://localhost:3000/api/geotags?lat=49.01379&long=8.404435 HTTP/1.1
+
+
+--- GeoTag Add New Tag ---
+
+### geotag add: all params
+POST http://localhost:3000/api/geotags HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Test", 
+    "lat":"49.01379",
+    "long":"8.404435",
+    "tag":"#test"
+}
+
+### geotag add: no params
+POST http://localhost:3000/api/geotags HTTP/1.1
+Content-Type: application/json
+
+
+--- get GeoTag ---
+
+### get GeoTag with ID
+GET http://localhost:3000/api/geotags/0 HTTP/1.1
+
+### get GeoTag wrong ID
+GET http://localhost:3000/api/geotags/-1 HTTP/1.1
+
+
+--- update GeoTag ---
+
+### update GeoTag: all params
+PUT http://localhost:3000/api/geotags/0 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Test - Castle", 
+    "lat":"49.01379",
+    "long":"8.404435",
+    "tag":"#test"
+}
+
+### update GeoTag: wrong id
+PUT http://localhost:3000/api/geotags/-1 HTTP/1.1
+Content-Type: application/json
+
+{"name":"Test - Castle","lat":"49.01379","long":"8.404435","tag":"#test"}
+
+### update GeoTag: no params
+PUT http://localhost:3000/api/geotags/0 HTTP/1.1
+Content-Type: application/json
+
+### update GeoTag: missing params
+PUT http://localhost:3000/api/geotags/0 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Test2 - Castle",
+    "lat":"0"
+}
+
+
+--- delete GeoTag ---
+
+### delete GeoTag
+DELETE http://localhost:3000/api/geotags/0 HTTP/1.1
+
+### delete GeoTag: wrong id
+DELETE http://localhost:3000/api/geotags/-1 HTTP/1.1
