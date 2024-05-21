@@ -85,3 +85,39 @@ DELETE http://localhost:3000/api/geotags/0 HTTP/1.1
 
 ### delete GeoTag: wrong id
 DELETE http://localhost:3000/api/geotags/-1 HTTP/1.1
+
+
+--- GeoTag Backend Demonstrator ---
+Backend Demonstrator mit generischem HTTP-Client
+Lebenszyklus für GeoTag vorführen: Erstellen, Auslesen, Ändern, Suchen, Löschen
+
+### Erstellen
+POST http://localhost:3000/api/geotags HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Demo GeoTag", 
+    "lat":"10",
+    "long":"10",
+    "tag":"#demo"
+}
+
+### Auslesen
+GET http://localhost:3000/api/geotags/11 HTTP/1.1
+
+### Ändern
+PUT http://localhost:3000/api/geotags/11 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Demo GeoTag Changed", 
+    "lat":"50",
+    "long":"50",
+    "tag":"#demoChanged"
+}
+
+### Suche
+GET http://localhost:3000/api/geotags?search=Demo&lat=50&long=50 HTTP/1.1
+
+### Löschen
+DELETE http://localhost:3000/api/geotags/11 HTTP/1.1

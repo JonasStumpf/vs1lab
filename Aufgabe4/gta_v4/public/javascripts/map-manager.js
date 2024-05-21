@@ -57,7 +57,12 @@
                 .addTo(this.#markers);
             marker.id = tag.id;
         }
-
+    }
+    addMarker(tag) {
+        const marker = L.marker([tag.latitude,tag.longitude], { icon: this.#defaultIcon })
+            .bindPopup(tag.name)
+            .addTo(this.#markers);
+        marker.id = tag.id;
     }
 
     goToMarker(id) {

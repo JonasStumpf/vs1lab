@@ -81,7 +81,6 @@ class InMemoryGeoTagStore{
     updateGeoTag(id, data = {}) {
         const tag = this.getGeoTag(id);
         if (!tag) return false;
-        console.log(data);
         tag.update(data.name, data.lat, data.long, data.hashtag);
         return tag;
     }
