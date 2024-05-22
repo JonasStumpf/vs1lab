@@ -67,6 +67,13 @@
                                 </button></li>
                             <% }); %>
                         </ul>
+                        <nav class="pagination hidden" aria-label="pagination">
+                            <button class="prev-btn" aria-label="previous page"></button>
+                            <p class="page-number">
+                                <span class="current"></span> / <span class="max"></span>
+                            </p>
+                            <button class="next-btn" aria-label="next page"></button>
+                        </nav>
                     </div>
 
                     <div class="discovery__map col-8" data-tags="<%= JSON.stringify(taglist) %>">

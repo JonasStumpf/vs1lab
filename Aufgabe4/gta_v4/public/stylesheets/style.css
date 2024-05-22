@@ -19,7 +19,9 @@ html {
 	/* This approach prevents issues with 3rd party content-box components */
 	box-sizing: inherit;
 }
-
+.hidden {
+	display: none !important;
+}
 
 /* Variables (example: see declaration for "a" below) */
 
@@ -283,10 +285,57 @@ main {
 .discovery__taglist li:not(:last-of-type) {
 	margin-bottom: 15px;
 }
+.discovery__taglist .new {
+	outline: 2px solid coral;
+}
 .discovery__map img {
 	display: block;
 	width: 100%;
 }
+
+.pagination {
+	margin-top: 15px;
+}
+.pagination {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+}
+.pagination button {
+	padding: 10px;
+	background: var(--background-color);
+	transition: color 0.25s ease, filter 0.25s ease;
+}
+.pagination button:hover, .pagination button:focus-visible {
+	color: var(--link-color);
+}
+.pagination button:disabled {
+	cursor: default;
+}
+.pagination .prev-btn::before, .pagination .next-btn::before {
+	content: "";
+	display: block;
+	width: 0.5em;
+	aspect-ratio: 1 / 1;
+	border: 2px solid currentColor;
+	border-top: none;
+	border-left: none;
+}
+.pagination .prev-btn::before {
+	transform: rotate(135deg) translate(-20%, -20%);
+}
+.pagination .next-btn::before {
+	transform: rotate(-45deg) translate(-20%, -20%);
+}
+.page-btns {
+	display: contents;
+}
+.page-btn.active {
+	outline: 2px solid coral;
+	pointer-events: none;
+}
+
 
 #map { 
 	height: 500px;

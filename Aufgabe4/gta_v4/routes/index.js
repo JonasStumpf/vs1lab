@@ -70,6 +70,18 @@ router.post("/discovery", checkLocation, (req, res)=>{
 
 
 // API routes (A4)
+/* pagination */
+const pagItemsPerPage = 3;
+router.get('/api/pag/geotags', (req, res, next)=>{
+  const data = req.query;
+  const tags = GeoTagList.searchNearbyGeoTags(data.search, data);
+  const startIndex = (data.page) ? (data.page - 1) * pagItemsPerPage : 0;
+  res.json( {
+    pages: Math.ceil(tags.length / pagItemsPerPage),
+    tags: tags.slice(startIndex, startIndex + pagItemsPerPage)
+  } );
+});
+
 /**
  * Route '/api/geotags' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
