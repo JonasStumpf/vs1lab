@@ -5,86 +5,28 @@ const listContainer = document.querySelector("#discoveryResults");
 const mapManager = new MapManager();
 const cords = getCords();
 const locationHelper = (cords.lat && cords.long) ? new LocationHelper(cords.lat, cords.long) : await new Promise((resolve) => {
-    LocationHelper.findLocation((helper)=>{
-        resolve(helper);
-    });
+    LocationHelper.findLocation((helper)=>resolve(helper));
 });
-
-init();
-
-
-document.querySelector("#discoveryFilterForm").addEventListener("submit", async (event)=>{
-    event.preventDefault();
-    const form = event.currentTarget;
-    const reqParams = (new URLSearchParams(new FormData(form))).toString();
-    let tags;
-    try {
-        const response = await fetch(`/api/geotags/?${reqParams}`, {
-            method: "GET",
-        });
-        if (!response.ok) throw new Error(response.status+" "+response.statusText);
-        tags = await response.json();
-    } catch (error) {
-        console.warn(error);
-        tags = false;
-    }
-    if (!tags) return;
-    clearTagList();
-    for (const tag of tags) {
-        addTagToList(tag);
-    }
-    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tags);
-});
-document.querySelector("#tag-form").addEventListener("submit", async (event)=>{
-    event.preventDefault();
-    const form = event.currentTarget;
-    let tag;
-    try {
-        const response = await fetch("/api/geotags", {
-            method: form.method.toUpperCase(),
-            body: JSON.stringify(Object.fromEntries(new FormData(form))),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        if (!response.ok) throw new Error(response.status+" "+response.statusText);
-        tag = await response.json();
-    } catch (error) {
-        console.warn(error);
-        tag = false;
-    }
-    if (!tag) return;
-    addTagToList(tag, true);
-    mapManager.addMarker(tag);
-    form.reset();
-    setInputCords();
-});
+const tagList = await fetchTags("get"); //const tagList = JSON.parse(mapContainer.dataset.tags || "[]");
 
 
-function clearTagList() {
-    listContainer.innerHTML = "";
-}
-function addTagToList(tag, pre = false) {
-    const item = createListElement(tag);
-    if (pre) listContainer.prepend(item);
-    else listContainer.append(item);
-}
-function createListElement(data) {
-    const container = document.createElement("li");
-    container.innerHTML = `<button data-id="${data.id}">${data.name} (${data.latitude},${data.longitude})<span>${data.hashtag}</span></button>`;
-    return container;
-}
+initForms();
+initMap();
+initList();
 
 
-function init() {
-    setInputCords();
+
+
+function initMap() {
     const mapContainer = document.querySelector(".discovery__map");
     mapContainer.innerHTML = '<div id="map"></div>';
+    mapManager.initMap(locationHelper.latitude, locationHelper.longitude); //create map
+    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tagList); //add markers
+}
 
-    const tagList = JSON.parse(mapContainer.dataset.tags || "[]");
-    mapManager.initMap(locationHelper.latitude, locationHelper.longitude);
-    mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tagList);
-
+function initList() {
+    addTagsToList(tagList);
+    //move to marker on list-element click
     listContainer.addEventListener("click", ()=>{
         let target = event.target;
         while (target && target != event.currentTarget && !target.dataset.id) {
@@ -94,6 +36,65 @@ function init() {
         mapManager.goToMarker(target.dataset.id);
     });
 }
+
+function initForms() {
+    setInputCords();
+    document.querySelector("#discoveryFilterForm").addEventListener("submit", async (event)=>{
+        event.preventDefault();
+        const tags = await fetchTags("get", (new URLSearchParams(new FormData(event.currentTarget))).toString());
+        if (!tags) return;
+
+        clearTagList();
+        addTagsToList(tags);
+        mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tags);
+    });
+    document.querySelector("#tag-form").addEventListener("submit", async (event)=>{
+        event.preventDefault();
+        const form = event.currentTarget;
+        const tag = await fetchTags(form.method, JSON.stringify(Object.fromEntries(new FormData(form))));
+        if (!tag) return;
+
+        listContainer.prepend(createListElement(tag));
+        mapManager.addMarker(tag);
+        form.reset();
+        setInputCords();
+    });
+}
+
+async function fetchTags(method, data) {
+    method = method.toUpperCase();
+    let tags, query = "", body = {};
+    if (method == "GET") query = "?"+data;
+    else body = {headers: {"Content-Type": "application/json"}, body: data};
+    try {
+        const response = await fetch(`/api/geotags/${query}`, {
+            method: method, 
+            ...body
+        });
+        if (!response.ok) throw new Error(response.status+" "+response.statusText);
+        tags = await response.json();
+    } catch (error) {
+        console.warn(error);
+        tags = false;
+    }
+    return tags;
+}
+
+function clearTagList() {
+    listContainer.innerHTML = "";
+}
+function addTagsToList(tags) {
+    for (const tag of tags) {
+        listContainer.append(createListElement(tag));
+    }
+}
+function createListElement(data) {
+    const container = document.createElement("li");
+    container.innerHTML = `<button data-id="${data.id}">${data.name} (${data.latitude},${data.longitude})<span>${data.hashtag}</span></button>`;
+    return container;
+}
+
+
 function setInputCords() {
     for (const latInput of document.querySelectorAll("input.js-lat")) {
         latInput.value = locationHelper.latitude;
