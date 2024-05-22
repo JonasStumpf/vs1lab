@@ -69,18 +69,15 @@ class InMemoryGeoTagStore{
     removeGeoTag(name) {
         this.#list = this.#list.filter((item)=>item.name != name);
     }
-    deleteGeoTag(id) {
+    deleteGeoTag(tag) {
         for (let i = 0; i < this.#list.length; i++) {
-            const tag = this.#list[i];
-            if (tag.id != id) continue;
+            if (tag.id != this.#list[i].id) continue;
             this.#list.splice(i, 1);
             return tag;
         }
         return false;
     }
-    updateGeoTag(id, data = {}) {
-        const tag = this.getGeoTag(id);
-        if (!tag) return false;
+    updateGeoTag(tag, data) {
         tag.update(data.name, data.lat, data.long, data.hashtag);
         return tag;
     }

@@ -35,7 +35,6 @@ document.querySelector("#discoveryFilterForm").addEventListener("submit", async 
     }
     mapManager.updateMarkers(locationHelper.latitude, locationHelper.longitude, tags);
 });
-
 document.querySelector("#tag-form").addEventListener("submit", async (event)=>{
     event.preventDefault();
     const form = event.currentTarget;
@@ -60,6 +59,7 @@ document.querySelector("#tag-form").addEventListener("submit", async (event)=>{
     form.reset();
     setInputCords();
 });
+
 
 function clearTagList() {
     listContainer.innerHTML = "";

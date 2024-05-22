@@ -68,8 +68,8 @@ router.post("/discovery", checkLocation, (req, res)=>{
   defaultRender(req, res);
 });
 
-// API routes (A4)
 
+// API routes (A4)
 /**
  * Route '/api/geotags' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -112,6 +112,16 @@ router.post('/api/geotags', (req, res, next)=>{
   res.json( tag );
 });
 
+
+const getTag = (req, res, next)=>{
+  const tag = GeoTagList.getGeoTag(req.params.id);
+  if (!tag) {
+    res.sendStatus(404);
+    return;
+  }
+  res._tag = tag;
+  next();
+}
 /**
  * Route '/api/geotags/:id' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -122,13 +132,8 @@ router.post('/api/geotags', (req, res, next)=>{
  * The requested tag is rendered as JSON in the response.
  */
 // TODO: ... your code here ...
-router.get('/api/geotags/:id', (req, res, next)=>{
-  const tag = GeoTagList.getGeoTag(req.params.id);
-  if (!tag) {
-    res.sendStatus(404);
-    return;
-  }
-  res.json( tag );
+router.get('/api/geotags/:id', getTag, (req, res, next)=>{
+  res.json( res._tag );
 });
 
 /**
@@ -145,13 +150,8 @@ router.get('/api/geotags/:id', (req, res, next)=>{
  * The updated resource is rendered as JSON in the response. 
  */
 // TODO: ... your code here ...
-router.put('/api/geotags/:id', (req, res, next)=>{
-  const tag = GeoTagList.updateGeoTag(req.params.id, req.body);
-  if (!tag) {
-    res.sendStatus(404);
-    return;
-  }
-  res.json( tag );
+router.put('/api/geotags/:id', getTag, (req, res, next)=>{
+  res.json( GeoTagList.updateGeoTag(res._tag, req.body) );
 });
 
 /**
@@ -165,13 +165,8 @@ router.put('/api/geotags/:id', (req, res, next)=>{
  * The deleted resource is rendered as JSON in the response.
  */
 // TODO: ... your code here ...
-router.delete('/api/geotags/:id', (req, res, next)=>{
-  const tag = GeoTagList.deleteGeoTag(req.params.id);
-  if (!tag) {
-    res.sendStatus(404);
-    return;
-  }
-  res.json( tag );
+router.delete('/api/geotags/:id', getTag, (req, res, next)=>{
+  res.json( GeoTagList.deleteGeoTag(res._tag) );
 });
 
 
