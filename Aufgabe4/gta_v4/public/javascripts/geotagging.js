@@ -7,8 +7,8 @@ const cords = getCords();
 const locationHelper = (cords.lat && cords.long) ? new LocationHelper(cords.lat, cords.long) : await new Promise((resolve) => {
     LocationHelper.findLocation((helper)=>resolve(helper));
 });
-//const {tags, pages} = await fetchTags("get" , `lat=${locationHelper.latitude}&long=${locationHelper.longitude}`); //const tagList = JSON.parse(mapContainer.dataset.tags || "[]");
-const {tags, pages} = await fetchTags("get"); //load without location search for example tags to show at the start, for testing/demo purposes
+const {tags, pages} = await fetchTags("get" , `lat=${locationHelper.latitude}&long=${locationHelper.longitude}`); //const tagList = JSON.parse(mapContainer.dataset.tags || "[]");
+//const {tags, pages} = await fetchTags("get"); //load without location search for example tags to show at the start, for testing/demo purposes
 
 class PaginationHandler {
     #page = 1;

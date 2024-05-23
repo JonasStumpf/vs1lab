@@ -78,7 +78,7 @@ router.get('/api/pag/geotags', (req, res, next)=>{
   const startIndex = (data.page) ? (data.page - 1) * pagItemsPerPage : 0;
   res.json( {
     pages: Math.ceil(tags.length / pagItemsPerPage),
-    tags: tags.slice(startIndex, startIndex + pagItemsPerPage)
+    tags: (data.page < 0) ? [] : tags.slice(startIndex, startIndex + pagItemsPerPage)
   } );
 });
 

@@ -121,3 +121,21 @@ GET http://localhost:3000/api/geotags?search=Demo&lat=50&long=50 HTTP/1.1
 
 ### Löschen
 DELETE http://localhost:3000/api/geotags/11 HTTP/1.1
+
+
+#--- Pagination ---
+
+### no param = first page
+GET http://localhost:3000/api/pag/geotags HTTP/1.1
+
+### get first page
+GET http://localhost:3000/api/pag/geotags?page=1 HTTP/1.1
+
+### get second page
+GET http://localhost:3000/api/pag/geotags?page=2 HTTP/1.1
+
+### get first page with search
+GET http://localhost:3000/api/pag/geotags?search=Castle&page=1 HTTP/1.1
+
+### get invalid page
+GET http://localhost:3000/api/pag/geotags?page=-1 HTTP/1.1
